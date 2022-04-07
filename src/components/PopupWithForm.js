@@ -1,6 +1,7 @@
 import React from "react";
 import '../index.css';
 
+
 function PopopWithForm(props){
   return(
     <article className={`popup ${props.name}-popup ${props.isOpen && "popup_opened"}`}>
