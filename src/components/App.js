@@ -3,7 +3,7 @@ import '../index.css';
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopopWithForm from './PopupWithForm';
+import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 
 function App() {
@@ -52,7 +52,7 @@ const [selectedCard, setSelectCard] = React.useState({link:"", name:""})
       />
       <Footer />
 
-      <PopopWithForm id="1" name="profile" title="Редактировать профиль" buttonText="Сохранить" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
+      <PopupWithForm id="1" name="profile" title="Редактировать профиль" buttonText="Сохранить" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
                 <input id="first" className="popup__text" minLength="2" maxLength="40" required autoComplete="off"
                     name="First_name" />
                 <span id="error-first" className="error-message"></span>
@@ -60,9 +60,9 @@ const [selectedCard, setSelectCard] = React.useState({link:"", name:""})
                     autoComplete="off" name="Profession" />
                 <span id="error-profession" className="error-message"></span>
 
-      </PopopWithForm>  
+      </PopupWithForm>  
 
-      <PopopWithForm id="2" name="add" title="Новое место"  buttonText="Создать" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
+      <PopupWithForm id="2" name="add" title="Новое место"  buttonText="Создать" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
                  <input id="place" className="popup__text name-place" name="Place" minLength="2" maxLength="30" required
                     autoComplete="off" placeholder="Название" />
                 <span id="error-place" className="error-message"></span>
@@ -70,15 +70,15 @@ const [selectedCard, setSelectCard] = React.useState({link:"", name:""})
                     placeholder="Ссылка на изображение" />
                 <span id="error-link" className="error-message"></span>
 
-      </PopopWithForm>  
+      </PopupWithForm>  
 
-      <PopopWithForm id="3" name="change-avatar" title="Обновить аватар" buttonText="Сохранить" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
+      <PopupWithForm id="3" name="change-avatar" title="Обновить аватар" buttonText="Сохранить" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
                 <input id="image-link" type="url" className="popup__text profile-photo" name="avatar" required
                     autoComplete="off" placeholder="Ссылка на изображение" />
                 <span id="error-image-link" className="error-message"></span>
-      </PopopWithForm>  
+      </PopupWithForm>  
 
-      <PopopWithForm id="4" name="deleat-submit" title="Вы уверены?" buttonText="Да" />
+      <PopupWithForm id="4" name="deleat-submit" title="Вы уверены?" buttonText="Да" />
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups}/>  
     </div>
