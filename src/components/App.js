@@ -5,6 +5,9 @@ import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
+import api from '../utils/Api';
+import { CurrentUserContext } from './CurrentUserContext';
+import EditProfilePopup from './EditProfilePopup';
 
 function App() {
 
@@ -13,6 +16,70 @@ const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
 const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
 const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
 const [selectedCard, setSelectCard] = React.useState({link:"", name:""})
+
+
+//Стейт currentUser и initialCards
+
+const [currentUser, setCurrentUser] = React.useState({})
+const [initialCards, setInitialCard] = React.useState([])
+
+//Эффект getUserInfo
+
+React.useEffect(() =>{
+  api.getProfile()
+  .then((res) =>{
+    setCurrentUser(res)
+  })
+  .catch((err) =>{
+    console.error(err)
+  })
+}, []);
+
+//Эффект getInitialCards
+
+React.useEffect(() =>{
+  api.getInitialCards()
+    .then((res) =>{
+      setInitialCard(res)
+    })
+    .catch((err)=>{
+      console.error(err)
+    })
+}, [])
+
+
+//Поддержка лайков и дизлайков 
+function handleCardLike(card){
+  const isLiked = card.likes.some(elm => elm._id === currentUser._id)
+
+    api.changeLikeStatus(card._id, !isLiked)
+      .then((newCard) =>{
+        setInitialCard((state) => state.map((c) => c._id === card._id ? newCard: c))
+      })
+   
+}
+
+//Удаление карточки со страницы 
+function handleDeleatCard(card){
+  api.deleatCard(card._id)
+    .then(() =>{
+      setInitialCard(initialCards.filter(c => c._id !== card._id))
+    })
+    .catch((err) =>{
+      console.error(err)
+    })
+}
+
+const handleUpdateUserInfo = (data) =>{
+  api.editProfile(data)
+    .then((res) =>{
+      setCurrentUser(res)
+      closeAllPopups()
+    })
+    .catch((err) =>{
+      console.error(err)
+    })
+}
 
 
 //Обработчики событий на открытие и закрытие popup'ов
@@ -42,6 +109,7 @@ const [selectedCard, setSelectCard] = React.useState({link:"", name:""})
 
 //JSX код страницы и popup'ов в виде функциональных компонентов
   return (
+    <CurrentUserContext.Provider value={currentUser}>
     <div className="page-site">
       <Header />
       <Main 
@@ -49,20 +117,15 @@ const [selectedCard, setSelectCard] = React.useState({link:"", name:""})
         onEditProfile={profileEditClick}
         onEditAvatar={changeAvatarClick}
         onAddPlace={addNewPlaceClick}
+        cards={initialCards}
+        onCardLike={handleCardLike}
+        onCardDeleat={handleDeleatCard}
       />
       <Footer />
 
-      <PopupWithForm id="1" name="profile" title="Редактировать профиль" buttonText="Сохранить" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
-                <input id="first" className="popup__text" minLength="2" maxLength="40" required autoComplete="off"
-                    name="First_name" />
-                <span id="error-first" className="error-message"></span>
-                <input id="profession" className="popup__text profession" minLength="2" maxLength="200" required
-                    autoComplete="off" name="Profession" />
-                <span id="error-profession" className="error-message"></span>
-
-      </PopupWithForm>  
-
-      <PopupWithForm id="2" name="add" title="Новое место"  buttonText="Создать" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
+      <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUserInfo}/>
+    
+      <PopupWithForm id="2" name="add" title="Новое место"  buttonText="Создать" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}  >
                  <input id="place" className="popup__text name-place" name="Place" minLength="2" maxLength="30" required
                     autoComplete="off" placeholder="Название" />
                 <span id="error-place" className="error-message"></span>
@@ -82,7 +145,7 @@ const [selectedCard, setSelectCard] = React.useState({link:"", name:""})
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups}/>  
     </div>
-    
+    </CurrentUserContext.Provider>
   );
 }
 

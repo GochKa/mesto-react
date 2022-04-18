@@ -20,13 +20,13 @@ class Api {
     .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
     .catch(console.log)
   }
-  editProfile(name, about){
+  editProfile(data){
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers:  this._headers,
       body: JSON.stringify({
-        name,
-        about
+        name: data.name,
+        about: data.about
       })
     })
     .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
@@ -55,18 +55,11 @@ class Api {
     .catch(console.log)
   }
 
-  deleatLike(id){
-    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-      method: "DELETE",
-      headers: this._headers
-    })
-    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
-    .catch(console.log)
-  }
 
-  addLike(id){
+
+  changeLikeStatus(id, isLiked){
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-      method: "PUT",
+      method: isLiked ? 'PUT' : 'DELETE',
       headers:  this._headers
     })
     .then(res => res.ok ? res.json() : Promise.reject(res.statusText))

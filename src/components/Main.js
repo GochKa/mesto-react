@@ -1,18 +1,10 @@
 import React from "react";
 import '../index.css';
-import api from "../utils/Api";
 import Card from "./Card";
+import { CurrentUserContext } from "./CurrentUserContext";
+
 function Main(props){
-  const [userInfo, setUserInfo] = React.useState({})
-  const [cards, setCards] = React.useState([])
- 
-  React.useEffect(() =>{
-    Promise.all ([api.getInitialCards() ,api.getProfile()])
-    .then(([card,res]) =>{
-      setUserInfo(res)
-      setCards(card)
-    })
-  }, [])
+  const currentUser = React.useContext(CurrentUserContext);
 
   const onEditProfile = () =>{
     props.onEditProfile(props.onClick)
@@ -31,25 +23,28 @@ function Main(props){
 
     <section className="profile">
       <button type="button" className="change-avatar" onClick={onEditAvatar}>
-        <img src={userInfo.avatar} alt="Профиль" className="profile__avatar"/>
+        <img src={currentUser.avatar} alt="Профиль" className="profile__avatar"/>
        </button>
        <div className="profile__info">
-          <h1 className="profile__info-title">{userInfo.name}</h1>
+          <h1 className="profile__info-title">{currentUser.name}</h1>
           <button className="edit-button" type="button" onClick={onEditProfile}>
            </button>
-           <p className="profile__info-subtitle">{userInfo.about}</p>
+           <p className="profile__info-subtitle">{currentUser.about}</p>
        </div>
     <button className="add-bottun" type="button" onClick={onAddPlace}></button>
     </section>
     <section className="post-list">
-      {cards.map((card) =>{
-        return(
-          <Card key={card._id} card={card}
-          onCardClick={props.onCardClick}
-          />
-        )
-      })}
-    </section>
+      {props.cards.map(card =>(
+        <Card 
+        key={card._id}
+        card={card}
+        onCardDeleat={props.onCardDeleat}
+        onCardLike={props.onCardLike}
+        onCardClick={props.onCardClick}
+        />
+      )
+      )}
+      </section>
 
   </main>
   );
