@@ -4,8 +4,8 @@ import Card from "./Card";
 import { CurrentUserContext } from "./CurrentUserContext";
 
 function Main(props){
+  
   const currentUser = React.useContext(CurrentUserContext);
-
   const onEditProfile = () =>{
     props.onEditProfile(props.onClick)
   }
