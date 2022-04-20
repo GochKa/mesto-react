@@ -1,6 +1,6 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
-import { CurrentUserContext } from "./CurrentUserContext";
+import { CurrentUserContext } from "./contexts/CurrentUserContext";
 
 function EditProfilePopup(props){
 
@@ -12,7 +12,7 @@ const currentUser = React.useContext(CurrentUserContext)
 React.useEffect(() => {
   setName(currentUser.name);
   setDescription(currentUser.about);
-}, [currentUser]); 
+}, [currentUser, props.isOpen]); 
 
 function handleSubmit(e){
   

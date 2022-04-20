@@ -6,7 +6,7 @@ import Footer from "./Footer";
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/Api';
-import { CurrentUserContext } from './CurrentUserContext';
+import { CurrentUserContext } from './contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
@@ -76,7 +76,7 @@ function handleCardLike(card){
 function handleDeleatCard(card){
   api.deleatCard(card._id)
     .then(() =>{
-      setInitialCard(initialCards.filter(c => c._id !== card._id))
+      setInitialCard(initialCards => initialCards.filter(c => c._id !== card._id))
     })
     .catch((err) =>{
       console.error(err)

@@ -1,6 +1,7 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
 
+
 function EditAvatarPopup(props){
   const avatarRef = React.useRef()
 
@@ -9,9 +10,15 @@ function EditAvatarPopup(props){
     const avatar = avatarRef.current.value
     props.onUpdateAvatar(avatar);
     }
+    
+    React.useEffect(() =>{
+      avatarRef.current.value=""
+    },[props.onClose, props.isOpen])
+
+
 
   return(
-    <PopupWithForm onSubmit={handleSubmit} onClose={props.onClose} isOpen={props.isOpen} title="Обновить аватар" buttonText="Сохранить" name="avatar">
+    <PopupWithForm onSubmit={handleSubmit} onClose={props.onClose} isOpen={props.isOpen} title="Обновить аватар" buttonText="Сохранить" name="avatar" >
       <input 
         ref={avatarRef}
         id="image-link"
@@ -21,6 +28,7 @@ function EditAvatarPopup(props){
         required
         autoComplete="off"
         placeholder="Ссылка на изображение" 
+        
          />
       <span id="error-image-link" className="error-message"></span>
 
