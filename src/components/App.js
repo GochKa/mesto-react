@@ -19,15 +19,11 @@ const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
 const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
 const [selectedCard, setSelectCard] = React.useState({link:"", name:""})
 
-
 //Стейт currentUser и initialCards
-
 const [currentUser, setCurrentUser] = React.useState({})
 const [initialCards, setInitialCard] = React.useState([])
 
-
 //Эффект getUserInfo
-
 React.useEffect(() =>{
   api.getProfile()
   .then((res) =>{
@@ -39,7 +35,6 @@ React.useEffect(() =>{
 }, []);
 
 //Эффект getInitialCards
-
 React.useEffect(() =>{
   api.getInitialCards()
     .then((res) =>{
